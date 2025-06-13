@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Careers at Sid Solutions</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to right, #eef2f3, #8e9eab);
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #1c1f26;
+      color: white;
+      padding: 2rem;
+      text-align: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2.5rem;
+    }
+    header p {
+      margin-top: 0.5rem;
+      font-size: 1.1rem;
+      color: #ccc;
+    }
+    .container {
+      max-width: 600px;
+      background: white;
+      margin: 3rem auto;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: 600;
+    }
+    input, select {
+      width: 100%;
+      padding: 0.75rem;
+      margin-top: 0.25rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+    button {
+      margin-top: 2rem;
+      padding: 0.75rem 1.5rem;
+      background-color: #007acc;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background-color: #005e99;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Careers at Sid Solutions</h1>
+    <p>End to end solutions for your future</p>
+  </header>
+
+  <div class="container">
+    <form id="uploadForm">
+      <label for="name">Full Name</label>
+      <input type="text" id="name" required />
+
+      <label for="email">Email Address</label>
+      <input type="email" id="email" required />
+
+      <label for="role">Position You're Applying For</label>
+      <select id="role" required>
+        <option value="">-- Select Role --</option>
+        <option value="Cloud Intern">Cloud Intern</option>
+        <option value="Software Development Intern">Software Development Intern</option>
+        <option value="AI Research Intern">AI Research Intern</option>
+      </select>
+
+      <label for="resume">Upload Your Resume (.txt)</label>
+      <input type="file" id="resume" accept=".txt" required />
+
+      <button type="submit">Submit Application</button>
+    </form>
+  </div>
+
+  <script>
+    const bucketUrl = "https://resume-analyzer-sjenukala.s3.amazonaws.com/"; // Update this as needed
+
+    document.getElementById("uploadForm").onsubmit = async function (e) {
+      e.preventDefault();
+
+      const file = document.getElementById("resume").files[0];
+      if (!file) {
+        alert("Please upload your resume file.");
+        return;
+      }
+
+      const filename = `${Date.now()}_${encodeURIComponent(file.name)}`;
+      const uploadUrl = bucketUrl + filename;
+
+      try {
+        const result = await fetch(uploadUrl, {
+          method: "PUT",
+          headers: {
+            "Content-Type": file.type || "text/plain"
+          },
+          body: file
+        });
+
+        if (result.ok) {
+          alert("✅ Your application has been submitted successfully!\nWe will email you your resume analysis shortly.");
+        } else {
+          alert("❌ Upload failed. Status: " + result.status);
+        }
+      } catch (err) {
+        console.error("Upload error:", err);
+        alert("❌ Upload failed. Check console for details.");
+      }
+    };
+  </script>
+</body>
+</html>
