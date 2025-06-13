@@ -2,7 +2,7 @@
 
 A fully serverless, AI-powered resume analyzer built with AWS. Users upload their resume via a professional career page and receive a personalized analysis report via email.
 
-[🌐 Live Form (optional if hosted)](https://siddharthajenukala.github.io/ai-resume-analyzer/)  
+[🌐 Live Form (https://siddharthajenukala.github.io/ai-resume-analyzer/)  
 [📂 GitHub Repository](https://github.com/siddharthajenukala/ai-resume-analyzer)
 
 ---
